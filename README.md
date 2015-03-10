@@ -38,6 +38,11 @@ so let's not assume that our first pass hash function has a neglible risk of col
 instead do the rolling adler32, optionally then a user configurable secure hash and verify
 our assumptions by doing an equality test on the identified duplciate data.
 
+See discussion of collisions in 160 bit SHA 1 in exabyte filesystems at http://plan9.bell-labs.com/sys/doc/venti/venti.html
+
+### Non-aligned duplication detection.
+
+See http://www.wdc.com/wdproducts/library/Flyer/ENG/2579-800022.pdf
 
 ## Design
 
