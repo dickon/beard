@@ -1,5 +1,4 @@
-# beard; an experimental off-line deduplication system
-
+# BEARD (billion entry automated reduction of duplication)
 
 ## Motivation
 
@@ -10,10 +9,17 @@ formats if I use a filesystem such as btrfs which can share extents between file
 
 ### RAM consumption
 
-duperemove, ZFS and the btrfs patches for online deduplication in the kernel
-store their hash tables in RAM. That's probably a limiting factor given
-the size of disks. Databases servers should be good enough to make good use of
-RAM to cache data access.
+duperemove, ZFS and the btrfs patches for online deduplication in the
+kernel store their hash tables in RAM. That's probably a limiting
+factor given the size of disks. I'd like to run them on a filesystem
+of 4TB and typically dedup will use a block size of 1KB. So that's
+about 4*10^9 entries in the hash table. That's already marginal for
+keeping in RAM, and we have a long history of geometric progression on
+storage size whereas the best block size is a function of the kind of
+data, i.e. constant to the first order of magnitude. 
+
+Databases servers are capable of making good use of RAM to cache data
+access and small amounts of SSD storage.
 
 ### Offline versus inline
 
@@ -72,3 +78,10 @@ filesystems table
 + there's likely to be some bit twiddling
 + both the interactions with the database and the filesystem will be slow 
   enough that being able to pipeline them is useful.
+
+The go language may be a resaonable choice.
+
+### Design for test
+
+If we can supply the block size as a parameter it should be possible to construct some 
+very small pieces of data with predictable dedup outcome.
