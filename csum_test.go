@@ -17,3 +17,18 @@ func ExampleSmallInc() {
 	fmt.Printf("out %x", rolling.Sum32())
 	// Output: out 28e0105
 }
+
+type Scanner struct {
+        window uint
+        scanned uint
+}
+
+func (p *Scanner) Scan(data []byte) {
+}
+
+func ExampleProgressive() {
+	var scanner = Scanner{2,0}
+	scanner.Scan([]byte("AAAA"))
+	fmt.Printf("scanned %d", scanner.scanned)
+	// Output: out 4
+}
