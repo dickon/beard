@@ -36,5 +36,5 @@ func ExampleProgressive() {
 	var scanner = Scanner{2,0, 0}
 	scanner.Scan([]byte("AAAA"))
 	fmt.Printf("scanned %d first %x", scanner.scanned, scanner.first)
-	// Output: scanned 4 first c50083
+	// Output: scanned 4 hashes [c50083, c50083, c50083]
 }
