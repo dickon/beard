@@ -1,5 +1,6 @@
 package beard
 import "hash"
+import "github.com/bakergo/rollsum"
 
 type Scanner struct {
         window uint
@@ -16,4 +17,8 @@ func (p *Scanner) Scan(data []byte) {
 			p.hashes[p.scanned-p.window] = p.rolling.Sum32()
 		}
 	}
+}
+
+func New(window uint) Scanner {
+	return Scanner{window,0,make([]uint32, 3), rollsum.New(uint32(window))}
 }

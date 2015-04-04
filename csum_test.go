@@ -19,9 +19,8 @@ func ExampleSmallInc() {
 	// Output: out c50083 out 28e0105
 }
 
-
 func ExampleProgressive() {
-	var scanner = Scanner{2,0,make([]uint32, 3), rollsum.New(uint32(2))}
+	scanner := New(2)
 	scanner.Scan([]byte("AAAA"))
 	fmt.Printf("scanned %d hashes %x", scanner.scanned, scanner.hashes)
 	// Output: scanned 4 hashes [c50083 c50083 c50083]
