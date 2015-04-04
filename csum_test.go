@@ -24,11 +24,12 @@ type Scanner struct {
 }
 
 func (p *Scanner) Scan(data []byte) {
+	p.scanned += uint(len(data))
 }
 
 func ExampleProgressive() {
 	var scanner = Scanner{2,0}
 	scanner.Scan([]byte("AAAA"))
 	fmt.Printf("scanned %d", scanner.scanned)
-	// Output: out 4
+	// Output: scanned 4
 }
