@@ -9,6 +9,10 @@ type Scanner struct {
 	rolling hash.Hash32
 }
 
+func New(window uint) Scanner {
+	return Scanner{window,0,make([]uint32, 0, 1), rollsum.New(uint32(window))}
+}
+
 func (p *Scanner) Scan(data []byte) {
 	for i:=0; i<len(data); i++ {
 		p.rolling.Write(data[i:i+1])
@@ -17,8 +21,4 @@ func (p *Scanner) Scan(data []byte) {
 			p.hashes = append(p.hashes, p.rolling.Sum32())
 		}
 	}
-}
-
-func New(window uint) Scanner {
-	return Scanner{window,0,make([]uint32, 0, 1), rollsum.New(uint32(window))}
 }
