@@ -14,11 +14,11 @@ func (p *Scanner) Scan(data []byte) {
 		p.rolling.Write(data[i:i+1])
 		p.scanned ++
 		if (p.scanned >= p.window)  {
-			p.hashes[p.scanned-p.window] = p.rolling.Sum32()
+			p.hashes = append(p.hashes, p.rolling.Sum32())
 		}
 	}
 }
 
 func New(window uint) Scanner {
-	return Scanner{window,0,make([]uint32, 3), rollsum.New(uint32(window))}
+	return Scanner{window,0,make([]uint32, 0, 1), rollsum.New(uint32(window))}
 }
