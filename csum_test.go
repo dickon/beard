@@ -22,15 +22,19 @@ func ExampleSmallInc() {
 type Scanner struct {
         window uint
         scanned uint
+	first uint32
 }
 
 func (p *Scanner) Scan(data []byte) {
 	p.scanned += uint(len(data))
+	rolling := rollsum.New(2)
+	rolling.Write(data[:2])
+	p.first = rolling.Sum32()
 }
 
 func ExampleProgressive() {
-	var scanner = Scanner{2,0}
+	var scanner = Scanner{2,0, 0}
 	scanner.Scan([]byte("AAAA"))
-	fmt.Printf("scanned %d first %x", scanner.scanned)
+	fmt.Printf("scanned %d first %x", scanner.scanned, scanner.first)
 	// Output: scanned 4 first c50083
 }
