@@ -31,6 +31,6 @@ func (p *Scanner) Scan(data []byte) {
 func ExampleProgressive() {
 	var scanner = Scanner{2,0}
 	scanner.Scan([]byte("AAAA"))
-	fmt.Printf("scanned %d", scanner.scanned)
-	// Output: scanned 4
+	fmt.Printf("scanned %d first %x", scanner.scanned)
+	// Output: scanned 4 first c50083
 }
