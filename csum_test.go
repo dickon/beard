@@ -13,9 +13,10 @@ func ExampleSmall() {
 func ExampleSmallInc() {
 	var rolling = rollsum.New(16)
 	rolling.Write([]byte("AA"))
-	rolling.Write([]byte("AA"))
 	fmt.Printf("out %x", rolling.Sum32())
-	// Output: out 28e0105
+	rolling.Write([]byte("AA"))
+	fmt.Printf(" out %x", rolling.Sum32())
+	// Output: out c50083 out 28e0105
 }
 
 type Scanner struct {
