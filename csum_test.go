@@ -2,6 +2,7 @@ package beard
 
 import "github.com/bakergo/rollsum"
 import "fmt"
+import "hash"
 
 func ExampleSmall() {
 	var rolling = rollsum.New(16)
@@ -22,19 +23,23 @@ func ExampleSmallInc() {
 type Scanner struct {
         window uint
         scanned uint
-	first uint32
+	hashes [] uint32
+	rolling hash.Hash32
 }
 
 func (p *Scanner) Scan(data []byte) {
-	p.scanned += uint(len(data))
-	rolling := rollsum.New(2)
-	rolling.Write(data[:2])
-	p.first = rolling.Sum32()
+	for i:=0; i<len(data); i++ {
+		p.rolling.Write(data[i:i+1])
+		p.scanned ++
+		if (p.scanned >= p.window)  {
+			p.hashes[p.scanned-p.window] = p.rolling.Sum32()
+		}
+	}
 }
 
 func ExampleProgressive() {
-	var scanner = Scanner{2,0, 0}
+	var scanner = Scanner{2,0,make([]uint32, 3), rollsum.New(uint32(2))}
 	scanner.Scan([]byte("AAAA"))
-	fmt.Printf("scanned %d first %x", scanner.scanned, scanner.first)
-	// Output: scanned 4 hashes [c50083, c50083, c50083]
+	fmt.Printf("scanned %d hashes %x", scanner.scanned, scanner.hashes)
+	// Output: scanned 4 hashes [c50083 c50083 c50083]
 }
