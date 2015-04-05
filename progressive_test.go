@@ -25,3 +25,10 @@ func ExampleProgressive() {
 	fmt.Printf("scanned %d hashes %x", scanner.scanned, scanner.hashes)
 	// Output: scanned 4 hashes [c50083 c50083 c50083]
 }
+
+func ExampleProgressive2() {
+	scanner := New(2)
+	scanner.Scan([]byte("AABAA"))
+	fmt.Printf("%x", scanner.hashes)
+	// Output: [c50083 c60084 c70084 c50083]
+}
