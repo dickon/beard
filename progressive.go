@@ -16,7 +16,7 @@ func New(window uint) Scanner {
 }
 
 func (p *Scanner) Scan(data []byte) {
-	for i:=0; i<len(data); i++ {
+	for i:=range data {
 		p.rolling.Write(data[i:i+1])
 		p.scanned ++
 		if (p.scanned >= p.window)  {
