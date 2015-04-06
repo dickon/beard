@@ -21,7 +21,8 @@ func ExampleSmallInc() {
 
 func ExampleProgressive() {
 	scanner := New(2)
-	scanner.Scan([]byte("AAAA"))
+	scanner.Scan([]byte("AA"))
+	scanner.Scan([]byte("AA"))
 	fmt.Printf("scanned %d hashes %x", scanner.scanned, scanner.hashes)
 	// Output: scanned 4 hashes [c50083 c50083 c50083]
 }
@@ -32,3 +33,4 @@ func ExampleProgressive2() {
 	fmt.Printf("%x", scanner.hashes)
 	// Output: [c50083 c60084 c70084 c50083]
 }
+
