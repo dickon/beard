@@ -41,7 +41,7 @@ func TestProgressive(t *testing.T) {
 	if !found {
 		t.Error("did not find expected block")
 	}
-	if len(scanner.blockindex) !=1 || string(*scanner.blockindex[0]) != "AA" {
+	if len(scanner.blockindex) !=1 || string((*scanner.blockindex[0]).data) != "AA" {
 		t.Error("could not retrieve block")
 	}
 	encoding, err := scanner.Encode([]byte("AA"))
@@ -77,5 +77,12 @@ func TestProgressive2(t *testing.T) {
 	}
 	if len(scanner.blocks[12976260]) != 1 {
 		t.Error("miscount")
+	}
+	encoding, err := scanner.Encode([]byte("AABAAA"))
+	if err != nil {
+		t.Error("conversion failed")
+	}
+	if fmt.Sprint(encoding) != "[{0 0} {2 2} {0 4}]" {
+		t.Error("unexpected encoding");
 	}
 }
