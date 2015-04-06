@@ -40,6 +40,9 @@ func TestProgressive(t *testing.T) {
 	if !found {
 		t.Error("did not find expected block")
 	}
+	if len(scanner.blockindex) !=1 || string(*scanner.blockindex[0]) != "AA" {
+		t.Error("could not retrieve block")
+	}
 	scanner.Scan([]byte("AA"))
 	if scanner.scanned != 4 {
 		t.Error("scanned wrong")
@@ -57,5 +60,11 @@ func TestProgressive2(t *testing.T) {
 	scanner.Scan([]byte("AABAA"))
 	if scanner.hashes[0] != 12910723 || scanner.hashes[1] != 12976260 || scanner.hashes[2] != 13041796 || scanner.hashes[3] != 12910723 {
 		t.Error("hashes unexpected")
+	}
+	if len(scanner.blocks[12910723]) != 1 {
+		t.Error("miscount")
+	}
+	if len(scanner.blocks[12976260]) != 1 {
+		t.Error("miscount")
 	}
 }
