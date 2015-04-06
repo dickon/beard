@@ -1,5 +1,6 @@
 package beard
 import "hash"
+import "bytes"
 import "github.com/bakergo/rollsum"
 
 type Scanner struct {
@@ -24,9 +25,20 @@ func (p *Scanner) Scan(data []byte) {
 			p.hashes = append(p.hashes, csum)
 			start := i+1 - int(p.window)
 			if start >= 0 {
-				p.blocks[csum] = append(p.blocks[csum], data[start:i+1])
+				p.Store(csum, data[start:i+1])
 			}
 			
 		}
 	}
+}
+
+func (p *Scanner) Store(csum uint32, block []byte) {
+	blocklist := p.blocks[csum]
+	for _, value := range blocklist {
+		if bytes.Compare(value, block) == 0 {
+			return
+		}
+	}
+	p.blocks[csum] = append(p.blocks[csum], block)
+
 }
