@@ -4,6 +4,7 @@ import "hash"
 import "bytes"
 import "github.com/bakergo/rollsum"
 
+// scan data and produce hashes
 type Scanner struct {
 	window  uint
 	scanned uint
@@ -12,7 +13,7 @@ type Scanner struct {
 	blocks  map[uint32][][]byte
 }
 
-func New(window uint) Scanner {
+func NewScanner(window uint) Scanner {
 	return Scanner{window, 0, make([]uint32, 0, 1), rollsum.New(uint32(window)),
 		make(map[uint32][][]byte)}
 }

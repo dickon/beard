@@ -1,36 +1,61 @@
 package beard
 
+
 import "github.com/bakergo/rollsum"
-import "fmt"
+import "testing"
 
-func ExampleSmall() {
+func TestSmall(t *testing.T) {
 	var rolling = rollsum.New(16)
-	rolling.Write([]byte("AAAA"))
-	fmt.Printf("out %x", rolling.Sum32())
-	// Output: out 28e0105
+	_, err := rolling.Write([]byte("AAAA"))
+	if err != nil {
+		t.Error(err)
+	}
+	if rolling.Sum32() != 0x28e0105 {
+		t.Error("mismatch")
+	}
 }
 
-func ExampleSmallInc() {
+func TestSmallInc(t *testing.T) {
 	var rolling = rollsum.New(16)
-	rolling.Write([]byte("AA"))
-	first := rolling.Sum32()
-	rolling.Write([]byte("AA"))
-	fmt.Print(first, rolling.Sum32())
-	// Output: 12910723 42860805
+	_, err := rolling.Write([]byte("AA"))
+	if err != nil {
+		t.Error(err)
+	}
+	if rolling.Sum32() != 12910723 {
+		t.Error("bad csum")
+	}
+	_, err2 :=rolling.Write([]byte("AA"))
+	if err2 != nil {
+		t.Error(err2)
+	}
+	if rolling.Sum32() != 42860805 {
+		t.Error("bad csum")
+	}
 }
 
-func ExampleProgressive() {
-	scanner := New(2)
+func TestProgressive(t *testing.T) {
+	scanner := NewScanner(2)
 	scanner.Scan([]byte("AA"))
 	_, found := scanner.blocks[12910723]
+	if !found {
+		t.Error("did not find expected block")
+	}
 	scanner.Scan([]byte("AA"))
-	fmt.Print(found, scanner.scanned, scanner.hashes, len(scanner.blocks), len(scanner.blocks[12910723]))
-	// Output: true 4 [12910723 12910723 12910723] 1 1
+	if scanner.scanned != 4 {
+		t.Error("scanned wrong")
+	}
+	if scanner.hashes[0] != 12910723 || scanner.hashes[1] != 12910723 || scanner.hashes[2] != 12910723 {
+		t.Error("hashes unexpected")
+	}
+	if len(scanner.blocks[12910723]) != 1 {
+		t.Error("miscount")
+	}
 }
 
-func ExampleProgressive2() {
-	scanner := New(2)
+func TestProgressive2(t *testing.T) {
+	scanner := NewScanner(2)
 	scanner.Scan([]byte("AABAA"))
-	fmt.Print(scanner.hashes)
-	// Output: [12910723 12976260 13041796 12910723]
+	if scanner.hashes[0] != 12910723 || scanner.hashes[1] != 12976260 || scanner.hashes[2] != 13041796 || scanner.hashes[3] != 12910723 {
+		t.Error("hashes unexpected")
+	}
 }
