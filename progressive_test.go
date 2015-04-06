@@ -43,6 +43,13 @@ func TestProgressive(t *testing.T) {
 	if len(scanner.blockindex) !=1 || string(*scanner.blockindex[0]) != "AA" {
 		t.Error("could not retrieve block")
 	}
+	encoding, err := scanner.Convert("AA")
+	if err != nil {
+		t.Error("conversion failed")
+	}
+	if fmt.Sprint(encoding) != "[{0 0}]" {
+		t.Error("unexpected encoding");
+	}
 	scanner.Scan([]byte("AA"))
 	if len(scanner.blockindex) != 1 {
 		t.Error("unexpected index size")
