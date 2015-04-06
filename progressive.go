@@ -3,6 +3,8 @@ package beard
 import "hash"
 import "bytes"
 import "github.com/bakergo/rollsum"
+import "hash/adler32"
+import "errors"
 
 // Scanner scans data and produce hashes
 type Scanner struct {
@@ -44,4 +46,28 @@ func (p *Scanner) Store(csum uint32, block []byte) {
 	}
 	p.blocks[csum] = append(p.blocks[csum], block)
 	p.blockindex = append(p.blockindex, &p.blocks[csum][len(p.blocks[csum])-1])
+}
+
+type Content struct {
+	block uint
+	location uint
+}
+
+func (p *Scanner) Encode(data []byte) ([] Content, error) {
+	csum := adler32.Checksum(data[0:p.window])
+	found := false
+	index := uint(0)
+	for _, candidate := range p.blocks[csum] {
+		if bytes.Compare(candidate, data) == 0 {
+			found = true
+			break
+		}
+	}
+	encoding := make([]Content, 1, 1)
+	if !found {
+		return encoding, errors.New("block not found")
+	}
+	encoding[0].block = index
+	encoding[0].location = 0
+	return encoding, nil
 }

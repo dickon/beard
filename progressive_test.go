@@ -3,6 +3,7 @@ package beard
 
 import "github.com/bakergo/rollsum"
 import "testing"
+import "fmt"
 
 func TestSmall(t *testing.T) {
 	var rolling = rollsum.New(16)
@@ -43,7 +44,7 @@ func TestProgressive(t *testing.T) {
 	if len(scanner.blockindex) !=1 || string(*scanner.blockindex[0]) != "AA" {
 		t.Error("could not retrieve block")
 	}
-	encoding, err := scanner.Convert("AA")
+	encoding, err := scanner.Encode([]byte("AA"))
 	if err != nil {
 		t.Error("conversion failed")
 	}
