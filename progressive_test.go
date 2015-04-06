@@ -22,9 +22,12 @@ func ExampleSmallInc() {
 func ExampleProgressive() {
 	scanner := New(2)
 	scanner.Scan([]byte("AA"))
+	if _, found := scanner.blocks[0xc50083]; found {
+		fmt.Print("found ")
+	}
 	scanner.Scan([]byte("AA"))
 	fmt.Printf("scanned %d hashes %x", scanner.scanned, scanner.hashes)
-	// Output: scanned 4 hashes [c50083 c50083 c50083]
+	// Output: found scanned 4 hashes [c50083 c50083 c50083]
 }
 
 func ExampleProgressive2() {
