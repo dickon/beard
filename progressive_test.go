@@ -44,6 +44,9 @@ func TestProgressive(t *testing.T) {
 		t.Error("could not retrieve block")
 	}
 	scanner.Scan([]byte("AA"))
+	if len(scanner.blockindex) != 1 {
+		t.Error("unexpected index size")
+	}
 	if scanner.scanned != 4 {
 		t.Error("scanned wrong")
 	}
