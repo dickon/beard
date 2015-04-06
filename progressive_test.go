@@ -36,4 +36,3 @@ func ExampleProgressive2() {
 	fmt.Printf("%x", scanner.hashes)
 	// Output: [c50083 c60084 c70084 c50083]
 }
-
