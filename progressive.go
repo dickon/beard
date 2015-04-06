@@ -4,18 +4,19 @@ import "hash"
 import "bytes"
 import "github.com/bakergo/rollsum"
 
-// scan data and produce hashes
+// Scanner scans data and produce hashes
 type Scanner struct {
 	window  uint
 	scanned uint
 	hashes  []uint32
 	rolling hash.Hash32
 	blocks  map[uint32][][]byte
+	blockindex []*[]byte
 }
 
 func NewScanner(window uint) Scanner {
 	return Scanner{window, 0, make([]uint32, 0, 1), rollsum.New(uint32(window)),
-		make(map[uint32][][]byte)}
+		make(map[uint32][][]byte), make([]*[]byte, 0, 1)}
 }
 
 func (p *Scanner) Scan(data []byte) {
@@ -42,5 +43,5 @@ func (p *Scanner) Store(csum uint32, block []byte) {
 		}
 	}
 	p.blocks[csum] = append(p.blocks[csum], block)
-
+	p.blockindex = append(p.blockindex, &p.blocks[csum][len(p.blocks[csum])-1])
 }
