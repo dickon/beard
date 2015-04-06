@@ -26,8 +26,8 @@ func ExampleProgressive() {
 		fmt.Print("found ")
 	}
 	scanner.Scan([]byte("AA"))
-	fmt.Printf("scanned %d hashes %x blocks %d", scanner.scanned, scanner.hashes, len(scanner.blocks))
-	// Output: found scanned 4 hashes [c50083 c50083 c50083] blocks 1
+	fmt.Printf("scanned %d hashes %x blocks %d AA blocks %d", scanner.scanned, scanner.hashes, len(scanner.blocks), len(scanner.blocks[0xc50083]))
+	// Output: found scanned 4 hashes [c50083 c50083 c50083] blocks 1 AA blocks 1
 }
 
 func ExampleProgressive2() {
