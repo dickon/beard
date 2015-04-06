@@ -13,16 +13,16 @@ func ExampleSmall() {
 func ExampleSmallInc() {
 	var rolling = rollsum.New(16)
 	rolling.Write([]byte("AA"))
-	fmt.Printf("out %x", rolling.Sum32())
+	first := rolling.Sum32()
 	rolling.Write([]byte("AA"))
-	fmt.Printf(" out %x", rolling.Sum32())
-	// Output: out c50083 out 28e0105
+	fmt.Print(first, rolling.Sum32())
+	// Output: 12910723 42860805
 }
 
 func ExampleProgressive() {
 	scanner := New(2)
 	scanner.Scan([]byte("AA"))
-	_, found := scanner.blocks[0xc50083]
+	_, found := scanner.blocks[12910723]
 	scanner.Scan([]byte("AA"))
 	fmt.Print(found, scanner.scanned, scanner.hashes, len(scanner.blocks), len(scanner.blocks[12910723]))
 	// Output: true 4 [12910723 12910723 12910723] 1 1
@@ -31,6 +31,6 @@ func ExampleProgressive() {
 func ExampleProgressive2() {
 	scanner := New(2)
 	scanner.Scan([]byte("AABAA"))
-	fmt.Printf("%x", scanner.hashes)
-	// Output: [c50083 c60084 c70084 c50083]
+	fmt.Print(scanner.hashes)
+	// Output: [12910723 12976260 13041796 12910723]
 }
