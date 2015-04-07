@@ -78,6 +78,12 @@ func TestProgressive2(t *testing.T) {
 	if len(scanner.blocks[12976260]) != 1 {
 		t.Error("miscount")
 	}
+	if len(scanner.blockindex) < 2 || string((*scanner.blockindex[1]).data) != "AB" {
+		t.Error("could not retrieve block")
+	}
+	if len(scanner.blockindex) < 3 || string((*scanner.blockindex[2]).data) != "BA" {
+		t.Error("could not retrieve block")
+	}
 	encoding, err := scanner.Encode([]byte("AABAAA"))
 	if err != nil {
 		t.Error("conversion failed")
