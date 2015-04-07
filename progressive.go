@@ -16,14 +16,13 @@ type BlockRecord struct {
 type Scanner struct {
 	window  uint
 	scanned uint
-	hashes  []uint32
 	rolling hash.Hash32
 	blocks  map[uint32][]BlockRecord
 	blockindex []*BlockRecord
 }
 
 func NewScanner(window uint) Scanner {
-	return Scanner{window, 0, make([]uint32, 0, 1), rollsum.New(uint32(window)),
+	return Scanner{window, 0, rollsum.New(uint32(window)),
 		make(map[uint32][]BlockRecord), make([]*BlockRecord, 0, 1)}
 }
 
@@ -33,7 +32,6 @@ func (p *Scanner) Scan(data []byte) {
 		p.scanned++
 		if p.scanned >= p.window {
 			csum := p.rolling.Sum32()
-			p.hashes = append(p.hashes, csum)
 			start := i + 1 - int(p.window)
 			if start >= 0 {
 				p.Store(csum, data[start:i+1])
